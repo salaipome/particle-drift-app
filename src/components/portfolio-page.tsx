@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import ParticleDrift from "@/components/ui/particle-drift";
 
-const SITE = "https://salaipome.github.io/portfolios";
+const BASE = import.meta.env.BASE_URL;
 const EMAIL = "shdigital.au@gmail.com";
 
 const COLOR = {
@@ -75,33 +75,33 @@ const SKILL_GROUPS: { cat: string; tags: Tag[] }[] = [
 
 const EDUCATION = [
   {
-    logo: `${SITE}/assets/logos/swinburne.svg`,
+    logo: `${BASE}assets/logos/swinburne.svg`,
     alt: "Swinburne University of Technology",
     name: "Graduate Certificate in Professional Data Analytics",
     desc: "Swinburne University of Technology — 2024–2025",
   },
   {
-    logo: `${SITE}/assets/logos/dante.png`,
+    logo: `${BASE}assets/logos/dante.png`,
     alt: "Audinate Dante",
     name: "Dante Certificate Level 1 & 2, IT Networking for Audio/Video",
     desc: "Audinate — October 2024",
   },
   {
-    logo: `${SITE}/assets/logos/google.png`,
+    logo: `${BASE}assets/logos/google.png`,
     alt: "Google",
     name: "Google Data Analytics Certificate",
     href: "https://coursera.org/verify/professional-cert/RHVLZZHGUFMD",
     desc: "Coursera — January 2024",
   },
   {
-    logo: `${SITE}/assets/logos/ibm.png`,
+    logo: `${BASE}assets/logos/ibm.png`,
     alt: "IBM",
     name: "Analysing Data with Excel",
     href: "https://courses.edx.org/certificates/d1c4f1b65bdd4490bfa689f6b62d700c",
     desc: "IBM / edX — June 2023",
   },
   {
-    logo: `${SITE}/assets/logos/kalay.png`,
+    logo: `${BASE}assets/logos/kalay.png`,
     alt: "Kalay University",
     name: "Bachelor of Science (Physics)",
     desc: "Kalay University, Myanmar — 2004",
@@ -295,7 +295,7 @@ export default function PortfolioPage() {
         {/* Work columns */}
         <div className="mt-[46px] grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-12">
           <CatBox
-            href={`${SITE}/data-analytics.html`}
+            href={`${BASE}data-analytics.html`}
             label="Data Analytics"
             art={
               <svg viewBox="0 0 140 80" fill="none" className="h-full max-h-[60px] w-auto">
@@ -320,7 +320,7 @@ export default function PortfolioPage() {
             }
           />
           <CatBox
-            href={`${SITE}/web-development-digital-marketing.html`}
+            href={`${BASE}web-development-digital-marketing.html`}
             label="Web Development & Digital Marketing"
             art={
               <svg viewBox="0 0 140 80" fill="none" className="h-full max-h-[60px] w-auto">

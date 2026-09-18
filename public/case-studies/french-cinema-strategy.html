@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>French Cinema Streaming Strategy — Salai Hang</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="wrap case">
+
+  <a class="backlink" href="https://salaipome.github.io/portfolio/">← Back to portfolio</a>
+
+  <div class="case-head">
+    <p class="section-label">Case Study</p>
+    <h1>French Cinema Streaming Strategy</h1>
+    <p class="case-meta">
+      <span>Python · Pandas · Matplotlib · Seaborn</span>
+    </p>
+  </div>
+
+  <article>
+
+    <h2>Brief</h2>
+    <p>
+      A hypothetical content-strategy brief: <strong>Canopy</strong>, a boutique streaming service
+      curating French-language film, wants to know whether its niche actually holds up. Working
+      from a 15,069-title streaming metadata dataset, the question was whether French films
+      genuinely differ from the rest of the catalogue on runtime, ratings and genre range — or
+      whether "French cinema" is really just a marketing story.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-label">Titles</div><div class="stat-value">15,069</div><div class="stat-sub">10 fields each</div></div>
+      <div class="stat"><div class="stat-label">French films</div><div class="stat-value">1,070</div><div class="stat-sub">by country or language</div></div>
+      <div class="stat"><div class="stat-label">Non-French</div><div class="stat-value">13,999</div><div class="stat-sub">comparison set</div></div>
+      <div class="stat"><div class="stat-label">Multi-genre</div><div class="stat-value">76.2%</div><div class="stat-sub">of French titles</div></div>
+    </div>
+
+    <h2>Cleaning</h2>
+    <p>
+      Rotten Tomatoes scores arrived as percentage strings (<code>"68%"</code>) and were converted
+      to decimals for comparison against IMDb. French films were isolated as any title whose
+      <code>Country</code> mentioned France or whose <code>Language</code> mentioned French —
+      1,070 titles against 13,999 everything-else, with the usual scattered gaps in Age,
+      Rotten Tomatoes and Director fields left as missing rather than guessed at.
+    </p>
+
+    <h2>1. Are French films actually longer?</h2>
+    <p>
+      Yes — French films run <strong>101.5 minutes</strong> on average against
+      <strong>92.8 minutes</strong> for everything else, a 8.7-minute gap. Enough to support a
+      "substantive, feature-length" angle rather than a padded runtime.
+    </p>
+    <figure>
+      <img src="assets/film-runtime.png" alt="Bar chart comparing average runtime of French vs non-French films">
+      <figcaption>Fig 1. — Average runtime: French vs. non-French.</figcaption>
+    </figure>
+
+    <h2>2. Do they actually rate better?</h2>
+    <p>
+      French films outscore the rest on both platforms: <strong>6.37 vs 5.87 on IMDb</strong>
+      (+0.50) and <strong>68.2% vs 65.0% on Rotten Tomatoes</strong> (+3.2 points). The distribution
+      view below is raw counts, not normalised — non-French has roughly 13× more titles, so its
+      bars sit taller throughout — but the French bars still sit visibly further right on both
+      charts, so the gap isn't a handful of outliers dragging an average.
+    </p>
+    <figure>
+      <img src="assets/film-ratings.png" alt="Bar charts comparing average IMDb and Rotten Tomatoes scores for French vs non-French films">
+      <figcaption>Fig 2. — Mean IMDb and Rotten Tomatoes scores, French vs. non-French.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/film-rating-distributions.png" alt="Histograms comparing IMDb and Rotten Tomatoes score distributions for French vs non-French films">
+      <figcaption>Fig 3. — Full rating distributions (raw counts) — French skews right on both metrics despite the much smaller sample.</figcaption>
+    </figure>
+
+    <h2>3. How much genre range is there?</h2>
+    <p>
+      <strong>76.2% of French films (815 of 1,070) carry more than one genre tag</strong>, and two
+      or three genres is the most common pattern — a single film can plausibly serve more than one
+      audience interest rather than locking into one category.
+    </p>
+    <figure>
+      <img src="assets/film-genres.png" alt="Pie chart and bar chart showing genre diversity among French films">
+      <figcaption>Fig 4. — Single vs. multi-genre split, and how many genres films typically carry.</figcaption>
+    </figure>
+
+    <h2>Summary</h2>
+    <div class="case-table-wrap">
+      <table class="case-table">
+        <thead>
+          <tr><th>Metric</th><th>French</th><th>Non-French</th><th>Gap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Avg. runtime</td><td>101.5 min</td><td>92.8 min</td><td class="adv">+8.7 min</td></tr>
+          <tr><td>IMDb rating</td><td>6.37</td><td>5.87</td><td class="adv">+0.50</td></tr>
+          <tr><td>Rotten Tomatoes</td><td>68.2%</td><td>65.0%</td><td class="adv">+3.2 pts</td></tr>
+          <tr><td>Multi-genre</td><td>76.2%</td><td>—</td><td class="adv">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Reading those numbers as a content strategy, the case for Canopy holds up:</p>
+    <ul class="reco-list">
+      <li><span class="n">01</span> Higher ratings on both platforms support quality-led marketing rather than a "hidden gem" apology.</li>
+      <li><span class="n">02</span> Longer average runtime positions the catalogue as substantive, feature-length viewing rather than filler.</li>
+      <li><span class="n">03</span> High genre overlap means individual titles can be marketed across more than one audience segment.</li>
+      <li><span class="n">04</span> A small (1,070-title) catalogue is a real constraint — the strategy is quality and positioning, not volume.</li>
+    </ul>
+
+  </article>
+
+</div>
+</body>
+</html>

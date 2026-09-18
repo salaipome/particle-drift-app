@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Marketing Campaign Performance — Salai Hang</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="wrap case">
+
+  <a class="backlink" href="https://salaipome.github.io/portfolio/">← Back to portfolio</a>
+
+  <div class="case-head">
+    <p class="section-label">Case Study</p>
+    <h1>Digital Marketing Campaign Performance</h1>
+    <p class="case-meta">
+      <span>Python · Pandas · Matplotlib · Self-directed</span>
+      <span class="sep">·</span>
+      <span>Data: <a href="https://www.kaggle.com/datasets/rabieelkharoua/predict-conversion-in-digital-marketing-dataset" target="_blank" rel="noopener">Predict Conversion in Digital Marketing Campaign</a> by Rabie El Kharoua, via Kaggle — CC BY 4.0</span>
+    </p>
+  </div>
+
+  <article>
+
+    <h2>Brief</h2>
+    <p>
+      A public 8,000-customer campaign dataset — spend, click-through rate, a conversion-rate
+      field, and a converted/didn't-convert outcome, split across five channels (PPC, SEO, Social
+      Media, Email, Referral) and four campaign types. It's a practice dataset rather than a live
+      ad account export, so this reads as a directional exercise in the same questions a real
+      account review asks: does channel or campaign type actually move conversion, and if not
+      those, what does?
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-label">Customers</div><div class="stat-value">8,000</div><div class="stat-sub">5 channels, 4 campaign types</div></div>
+      <div class="stat"><div class="stat-label">Total ad spend</div><div class="stat-value">$40.0M</div><div class="stat-sub">avg $5,001 / customer</div></div>
+      <div class="stat"><div class="stat-label">Conversion rate</div><div class="stat-value">87.7%</div><div class="stat-sub">across the whole dataset</div></div>
+      <div class="stat"><div class="stat-label">Avg. CTR</div><div class="stat-value">15.5%</div><div class="stat-sub">click-through rate</div></div>
+    </div>
+
+    <h2>Cleaning</h2>
+    <p>
+      QA pass across all 20 columns: <code>df.isna().sum()</code> returned zero missing values,
+      and zero duplicate <code>CustomerID</code> rows. Two columns —
+      <code>AdvertisingPlatform</code> and <code>AdvertisingTool</code> — turned out to hold a
+      single placeholder value across every one of the 8,000 rows (<code>"IsConfid"</code> and
+      <code>"ToolConfid"</code> respectively — redacted rather than genuinely captured), so they
+      were dropped before analysis rather than treated as real signal. The categorical fields
+      checked out cleanly: <strong>Gender</strong> splits 4,839 Female / 3,161 Male, the five
+      <strong>CampaignChannel</strong> values and four <strong>CampaignType</strong> values are
+      each represented in the low-to-mid thousands with no rare or malformed categories, and every
+      numeric field's observed range matched what you'd expect (age 18–69, income
+      $20,014–$149,986) with no negative values or impossible outliers.
+    </p>
+
+    <h2>Data profile</h2>
+    <p>
+      Descriptive statistics for the demographic, spend and engagement fields used below.
+    </p>
+    <div class="case-table-wrap">
+      <table class="case-table">
+        <thead><tr><th>Field</th><th>Min</th><th>Mean</th><th>Median</th><th>Max</th><th>Std dev</th></tr></thead>
+        <tbody>
+          <tr><td>Age</td><td>18</td><td>43.6</td><td>43</td><td>69</td><td>14.9</td></tr>
+          <tr><td>Income ($)</td><td>20,014</td><td>84,664</td><td>84,927</td><td>149,986</td><td>37,580</td></tr>
+          <tr><td>AdSpend ($)</td><td>100</td><td>5,001</td><td>5,013</td><td>9,998</td><td>2,838</td></tr>
+          <tr><td>ClickThroughRate</td><td>0.01</td><td>0.155</td><td>0.155</td><td>0.30</td><td>0.084</td></tr>
+          <tr><td>ConversionRate</td><td>0.01</td><td>0.104</td><td>0.104</td><td>0.20</td><td>0.055</td></tr>
+          <tr><td>WebsiteVisits</td><td>0</td><td>24.8</td><td>25</td><td>49</td><td>14.3</td></tr>
+          <tr><td>PagesPerVisit</td><td>1.0</td><td>5.5</td><td>5.5</td><td>10.0</td><td>2.6</td></tr>
+          <tr><td>TimeOnSite (min)</td><td>0.5</td><td>7.7</td><td>7.7</td><td>15.0</td><td>4.2</td></tr>
+          <tr><td>SocialShares</td><td>0</td><td>49.8</td><td>50</td><td>99</td><td>28.9</td></tr>
+          <tr><td>EmailOpens</td><td>0</td><td>9.5</td><td>9</td><td>19</td><td>5.7</td></tr>
+          <tr><td>EmailClicks</td><td>0</td><td>4.5</td><td>4</td><td>9</td><td>2.9</td></tr>
+          <tr><td>PreviousPurchases</td><td>0</td><td>4.5</td><td>4</td><td>9</td><td>2.9</td></tr>
+          <tr><td>LoyaltyPoints</td><td>0</td><td>2,490</td><td>2,497</td><td>4,999</td><td>1,430</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Channel performance</h2>
+    <p>
+      Across the five channels, conversion rate barely moves — everything sits between
+      <strong>86.8% and 88.3%</strong>, and spend-per-conversion is just as tight, between
+      <strong>$5,612 and $5,809</strong>. PPC — the closest analog here to Google-Ads-style paid
+      search — lands right in the middle of the pack on both measures, not a standout in either
+      direction.
+    </p>
+    <figure>
+      <img src="assets/dm-channel-performance.png" alt="Bar charts of conversion rate and spend per conversion across five marketing channels, all within a narrow range">
+      <figcaption>Fig 1. — Conversion rate and spend-per-conversion by channel. The dashed line marks the dataset-wide average — every channel sits close to it.</figcaption>
+    </figure>
+
+    <h2>Campaign type is where the real gap is</h2>
+    <p>
+      Campaign type tells a clearer story than channel does. Bottom-of-funnel
+      <strong>"Conversion"-type campaigns convert at 93.4%</strong>, well above Awareness,
+      Consideration and Retention campaigns, which all sit around 85.6–85.8%. That's the one
+      genuinely sizeable gap anywhere in this dataset.
+    </p>
+    <figure>
+      <img src="assets/dm-campaign-type.png" alt="Bar chart of conversion rate by campaign type, with Conversion-type campaigns notably higher than Awareness, Consideration and Retention">
+      <figcaption>Fig 2. — Conversion-type campaigns outperform every other campaign type by roughly 8 points.</figcaption>
+    </figure>
+
+    <h2>What actually correlates with conversion?</h2>
+    <p>
+      Running every numeric field against the actual conversion outcome, nothing comes close to a
+      strong relationship — the top correlation is only <strong>0.13</strong>. Age, income and
+      social shares are essentially unrelated to conversion (all under 0.02, one slightly
+      negative). What little signal exists sits with on-site and email engagement, spend, and
+      click-through rate — all real but modest.
+    </p>
+    <figure>
+      <img src="assets/dm-correlation.png" alt="Horizontal bar chart of correlation between each feature and actual conversion outcome, all values weak and under 0.13">
+      <figcaption>Fig 3. — Nothing here is a strong predictor on its own — note the axis only runs to about 0.13. Demographics barely register.</figcaption>
+    </figure>
+
+    <h2>Engagement, not demographics</h2>
+    <p>
+      Converted customers consistently show more engagement than those who didn't convert — more
+      time on site, more email opens and clicks, more prior purchases — even though none of those
+      gaps are dramatic on their own.
+    </p>
+    <figure>
+      <img src="assets/dm-engagement.png" alt="Four bar charts comparing time on site, email opens, email clicks and previous purchases between converted and non-converted customers, all higher for converted customers">
+      <figcaption>Fig 4. — Converted customers run higher across every engagement measure checked — directionally consistent, even if each individual gap is modest.</figcaption>
+    </figure>
+
+    <h2>A data-quality note</h2>
+    <p>
+      The dataset ships its own <code>ConversionRate</code> field (0–0.2, one per customer) as well
+      as the actual converted/didn't-convert outcome — worth checking whether the two agree. They
+      point the same direction (converted customers score higher: median 0.107 vs. 0.081) but
+      overlap heavily, matching the same 0.09 correlation seen above. Combined with every numeric
+      field in this dataset being close to uniformly distributed, that's consistent with this being
+      a synthetically generated practice dataset rather than a real captured ad log — a reason to
+      read the findings here as directional, not as a stand-in for a live account.
+    </p>
+    <figure>
+      <img src="assets/dm-conversion-rate-box.png" alt="Box plot comparing the dataset's own ConversionRate field between customers who did and did not convert, showing heavy overlap with only a modest shift">
+      <figcaption>Fig 5. — The dataset's own "ConversionRate" field shifts in the right direction for converted customers, but the overlap is substantial.</figcaption>
+    </figure>
+
+    <h2>What this means</h2>
+    <ul class="reco-list">
+      <li><span class="n">01</span><span>Channel choice alone isn't doing much work here — with all five channels landing within about a point and a half of each other, reallocating budget between channels on this data wouldn't be expected to move conversion.</span></li>
+      <li><span class="n">02</span><span>Campaign type is the one lever that matters: weighting spend toward bottom-of-funnel, conversion-stage campaigns tracks with a real (~8pt) lift over awareness or retention framing.</span></li>
+      <li><span class="n">03</span><span>Engagement signals — time on site, email opens and clicks, repeat purchase history — are the closest thing to a leading indicator in this data, well ahead of demographic targeting by age or income.</span></li>
+      <li><span class="n">04</span><span>Given the uniform spread across every feature, this is best read as a directional exercise in the right questions to ask of a live account, not as a finding to act on directly.</span></li>
+    </ul>
+
+  </article>
+
+</div>
+</body>
+</html>

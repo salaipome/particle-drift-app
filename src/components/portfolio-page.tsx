@@ -1,7 +1,7 @@
 import { useState, type MouseEvent } from "react";
 import ParticleDrift from "@/components/ui/particle-drift";
 
-const SITE = "https://salaipome.github.io/portfolio";
+const SITE = "https://salaipome.github.io/portfolios";
 const EMAIL = "shdigital.au@gmail.com";
 
 const COLOR = {

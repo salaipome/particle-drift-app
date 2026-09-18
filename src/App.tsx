@@ -1,11 +1,7 @@
-import PortfolioHero from "@/components/portfolio-hero";
+import PortfolioPage from "@/components/portfolio-page";
 
 function App() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-neutral-950 p-8">
-      <PortfolioHero />
-    </main>
-  );
+  return <PortfolioPage />;
 }
 
 export default App;

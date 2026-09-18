@@ -5,7 +5,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/particle-drift-app/",
+  base: "/sh-portfolio/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

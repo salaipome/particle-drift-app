@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Satisfaction Analysis — Salai Hang</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="wrap case">
+
+  <a class="backlink" href="https://salaipome.github.io/portfolio/">← Back to portfolio</a>
+
+  <div class="case-head">
+    <p class="section-label">Case Study</p>
+    <h1>Employee Satisfaction Analysis</h1>
+    <p class="case-meta">
+      <span>Python · Pandas · Scikit-learn · NLTK / TextBlob</span>
+    </p>
+  </div>
+
+  <article>
+
+    <h2>Brief</h2>
+    <p>
+      A 142-row HR dataset — demographics, tenure, income, a 0–100 satisfaction score, and an
+      open-ended text review per employee. Three angles on the same question — what's actually
+      driving satisfaction: unsupervised clustering to find natural employee segments, a decision
+      tree to rank which features predict dissatisfaction, and sentiment analysis on the free-text
+      reviews themselves.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-label">Employees</div><div class="stat-value">142</div><div class="stat-sub">9 fields each</div></div>
+      <div class="stat"><div class="stat-label">Age</div><div class="stat-value">37 yrs</div><div class="stat-sub">range 19–58</div></div>
+      <div class="stat"><div class="stat-label">Monthly income</div><div class="stat-value">$8.35K</div><div class="stat-sub">range $1.56K–$20.24K</div></div>
+      <div class="stat"><div class="stat-label">Satisfaction</div><div class="stat-value">59.5</div><div class="stat-sub">range 20–100</div></div>
+    </div>
+
+    <h2>Cleaning</h2>
+    <p>
+      Two missing values in the free-text <code>review</code> column were filled with
+      <code>"No feedback provided"</code> rather than dropped, to keep every row for the numeric
+      analysis. No duplicate rows. Columns were renamed to consistent snake_case, and the
+      <code>row_id</code> identifier was dropped before modelling since it carries no signal.
+    </p>
+
+    <h2>Exploring the data</h2>
+    <p>
+      Business travel splits roughly 52% non-travel, 37% frequent travellers, and the rest
+      rarely-travel. Education skews toward A-Level and Higher Certificate holders, with
+      Bachelors, Diploma, Masters and Doctorate each in the minority. The workforce is 62% male,
+      38% female.
+    </p>
+    <figure>
+      <img src="assets/distributions.png" alt="Histograms of age, monthly income, total working years and satisfaction score">
+      <figcaption>Fig 1. — Age and tenure skew younger/junior; income is bimodal (a distinct lower- and higher-earning group); satisfaction is fairly evenly spread rather than clustered near one end.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/categorical.png" alt="Bar charts of business travel, education and gender counts">
+      <figcaption>Fig 2. — Category counts for business travel, education level and gender.</figcaption>
+    </figure>
+
+    <h2>What correlates with satisfaction</h2>
+    <p>
+      The standout relationship in the data isn't with satisfaction at all: <strong>age and total
+      working years are strongly correlated (0.93)</strong> — unsurprising, since tenure
+      accumulates with age. Income correlates moderately with both age (0.57) and tenure (0.55).
+      Satisfaction score, though, barely moves with any of them — age (0.03), tenure (0.11),
+      income (0.22) — which suggests seniority and pay aren't what's driving how satisfied people
+      say they are.
+    </p>
+    <figure>
+      <img src="assets/correlation.png" alt="Correlation heatmap of age, monthly income, total working years and satisfaction score">
+      <figcaption>Fig 3. — Correlation heatmap: strong age↔tenure relationship, weak links to satisfaction.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/income-satisfaction.png" alt="Scatter plot of monthly income against satisfaction score">
+      <figcaption>Fig 4. — Income vs. satisfaction isn't a smooth trend — it reads more like distinct groups, which is what motivated formal clustering rather than eyeballing the scatter.</figcaption>
+    </figure>
+
+    <h2>Preparing for clustering</h2>
+    <p>
+      Numeric features (age, income, tenure, satisfaction) were Min-Max scaled to a 0–1 range, and
+      the three categorical fields (business travel, education, gender) were label-encoded, since
+      K-Means needs purely numeric input.
+    </p>
+
+    <h2>K-Means: how many segments?</h2>
+    <p>
+      Running the elbow method across k = 1 to 10, inertia drops sharply through k = 4 and
+      flattens out after that. A silhouette analysis over the same range agrees —
+      <strong>k = 4 scores highest at 0.74</strong>, well clear of every other option — so both
+      methods point to the same number of segments.
+    </p>
+    <figure>
+      <img src="assets/elbow.png" alt="Elbow method plot showing inertia against number of clusters">
+      <figcaption>Fig 5. — Elbow method: the bend at k=4 marks where adding more clusters stops meaningfully reducing inertia.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/silhouette.png" alt="Silhouette score plot peaking at 4 clusters">
+      <figcaption>Fig 6. — Silhouette analysis agrees: 4 clusters scores highest (0.74).</figcaption>
+    </figure>
+
+    <h2>Four employee segments</h2>
+    <p>
+      Fitting K-Means with k = 4 on scaled age, income, tenure and satisfaction splits the
+      workforce into four fairly distinct groups when plotted on income against satisfaction —
+      and the chart makes one thing obvious straight away: income alone doesn't predict
+      satisfaction.
+    </p>
+    <figure>
+      <img src="assets/cluster-scatter.png" alt="Scatter plot of the four K-Means clusters by monthly income and satisfaction score">
+      <figcaption>Fig 7. — Four segments by income and satisfaction. Two of the higher-income groups aren't the most satisfied ones.</figcaption>
+    </figure>
+    <ul class="reco-list">
+      <li><span class="n">01</span><span><strong>High income, highly satisfied</strong> — reads as the longer-tenured, senior group. Worth retaining through mentorship roles and long-term incentives rather than pay alone.</span></li>
+      <li><span class="n">02</span><span><strong>Lower income, moderately satisfied</strong> — an earlier-career profile still building tenure. Clear progression paths and competitive entry pay would matter more here than they currently seem to.</span></li>
+      <li><span class="n">03</span><span><strong>Lower-to-moderate income, clearly dissatisfied</strong> — the group most worth intervening on, with performance-based recognition and skill development rather than assuming pay is the only lever.</span></li>
+      <li><span class="n">04</span><span><strong>Top earners, only moderately satisfied</strong> — the clearest evidence that compensation and satisfaction aren't the same thing; better suited to an engagement survey than another pay rise.</span></li>
+    </ul>
+
+    <h2>Predicting satisfaction with a decision tree</h2>
+    <p>
+      Beyond describing segments, a decision tree classifier was trained to predict whether an
+      employee sits above or below the satisfaction midpoint, using demographic and role features.
+      On a held-out 20% test split it reached <strong>86.2% accuracy</strong> — 90% precision and
+      recall on "Satisfied", 78% on "Dissatisfied" (the softer number likely reflects the smaller
+      class in a 142-row dataset).
+    </p>
+    <figure>
+      <img src="assets/feature-importance.png" alt="Bar chart of decision tree feature importances, led by frequent business travel">
+      <figcaption>Fig 8. — What the tree actually splits on: frequent travel dominates, then tenure, then income.</figcaption>
+    </figure>
+    <p>
+      <strong>Frequent business travel is the single strongest predictor of dissatisfaction</strong>
+      — by a wide margin over everything else the model had access to, including pay. Total
+      working years and monthly income follow well behind it.
+    </p>
+
+    <h2>What employees are actually saying</h2>
+    <p>
+      The free-text reviews were cleaned, tokenised and scored for sentiment with TextBlob. Read
+      across all 142 reviews, feedback skews positive but not overwhelmingly so:
+    </p>
+    <figure>
+      <img src="assets/sentiment-pie.png" alt="Pie chart of sentiment distribution across employee reviews: 55% positive, 27.5% neutral, 17.6% negative">
+      <figcaption>Fig 9. — 55% positive, 27.5% neutral, 17.6% negative across all reviews.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/wordcloud.png" alt="Word cloud of the most frequent words in employee feedback, dominated by work, pay, travel, management and good">
+      <figcaption>Fig 10. — Most frequent words after stopword removal — "pay," "travel" and "management" sit right alongside "good" and "happy."</figcaption>
+    </figure>
+    <p>
+      Cutting sentiment by business travel frequency lines up with the decision tree's top
+      predictor almost exactly: frequent travellers post the highest share of negative reviews by
+      a clear margin, while non-travellers and rare travellers skew far more positive.
+    </p>
+    <figure>
+      <img src="assets/sentiment-travel.png" alt="Stacked bar chart of sentiment share by business travel frequency, with Travel Frequently showing the most negative sentiment">
+      <figcaption>Fig 11. — Sentiment by travel frequency — the "Travel Frequently" group carries the most negative and least positive feedback of the three.</figcaption>
+    </figure>
+    <p>
+      The two clearest extremes: <em>"ServiceFirst is a great start for my career, learning a
+      lot"</em> (most positive) against <em>"Office politics are the worst"</em> (most negative)
+      — career growth and workplace culture are pulling in opposite directions.
+    </p>
+
+    <h2>Where this points</h2>
+    <p>Three independent methods — clustering, a decision tree, and sentiment analysis of free text — converge on the same story:</p>
+    <ul class="reco-list">
+      <li><span class="n">01</span> Travel is the biggest lever, not pay — reworking travel policy (rotation, wellness support, flexible scheduling) would likely move satisfaction more than a compensation review would.</li>
+      <li><span class="n">02</span> Two of the four segments earn well above average and are still only moderately satisfied, which points at engagement rather than income as the gap to close for higher earners.</li>
+      <li><span class="n">03</span> Career growth and workplace culture dominate the positive reviews; office politics and stagnant pay dominate the negative ones — both are addressable without a blanket pay rise.</li>
+    </ul>
+
+  </article>
+
+</div>
+</body>
+</html>

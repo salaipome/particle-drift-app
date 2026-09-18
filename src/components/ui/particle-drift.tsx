@@ -238,7 +238,8 @@ const PARTICLE_DRIFT_SOURCE = `<!doctype html>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            gsap.registerPlugin(ScrollTrigger);
+            const hasGsap = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
+            if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
             // --- ASCII Particle System Implementation ---
             const canvas = document.getElementById('particle-canvas');
@@ -363,6 +364,7 @@ const PARTICLE_DRIFT_SOURCE = `<!doctype html>
             draw();
 
             // --- GSAP Timeline Reveals ---
+            if (hasGsap) {
             const heading = document.getElementById('hero-heading');
 
             // Staggered vertical masked word setup
@@ -415,6 +417,7 @@ const PARTICLE_DRIFT_SOURCE = `<!doctype html>
                 repeat: -1,
                 ease: "sine.inOut"
             });
+            }
         });
     </script>
 </body>
@@ -432,10 +435,7 @@ const PARTICLE_DRIFT_DEFINITION: EffectDefinition = {
     let next = source
       .replace(
         "Array.from({ length: 90 })",
-        `Array.from({ length: ${scaleCount(90, 1, 12)} })`.replace(
-          String(scaleCount(90, 1, 12)),
-          String(scaleCount(90, density, 12)),
-        ),
+        `Array.from({ length: ${scaleCount(90, density, 12)} })`,
       )
       .replace(
         "Array.from({ length: 25 })",
@@ -638,7 +638,9 @@ export default function ParticleDrift({
   const safeSaturation = clamp(saturation, 0, 2);
   const safeBrightness = clamp(brightness, 0.35, 1.65);
 
-  // Rebuild when baked geometry/mode knobs change. Speed/opacity stay live via postMessage + time wrap.
+  // Rebuild only when knobs that actually affect the baked source change (this effect's
+  // `patch` reads size/length/density/mode; gap/strokeWidth are accepted for API parity with
+  // other effects but unused here). Speed/opacity stay live via postMessage + time wrap.
   const source = useMemo(
     () =>
       buildFocusedDocument(PARTICLE_DRIFT_DEFINITION, {
@@ -651,7 +653,7 @@ export default function ParticleDrift({
         strokeWidth: safeStrokeWidth,
         opacity: PARTICLE_DRIFT_DEFAULTS.opacity,
       }),
-    [resolvedMode, safeDensity, safeGap, safeLength, safeSize, safeStrokeWidth],
+    [resolvedMode, safeDensity, safeLength, safeSize],
   );
 
   useEffect(() => {

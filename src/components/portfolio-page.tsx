@@ -222,7 +222,7 @@ function SectionLabelArt({ children }: { children: React.ReactNode }) {
 export default function PortfolioPage() {
   return (
     <div className="relative min-h-screen bg-[#030509] text-[#ece8e0]">
-      <ParticleDrift className="fixed inset-0 h-full w-full" />
+      <ParticleDrift className="fixed inset-0 h-full w-full" speed={0.4} />
 
       <div className="relative z-10 mx-auto max-w-[900px] px-5 py-16">
         {/* Masthead */}

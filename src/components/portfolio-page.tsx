@@ -8,8 +8,8 @@ const COLOR = {
   ink: "#ece8e0",
   inkDim: "#9299a4",
   inkFaint: "#5c6370",
-  amber: "#dda054",
-  amberDim: "#a9793f",
+  accent: "#60a5fa",
+  accentDim: "#3b82f6",
   teal: "#5fb0a3",
   line: "#2b3038",
   surface: "#1a1e25",
@@ -150,8 +150,8 @@ function EmailButton() {
       }}
       onMouseEnter={(e) => {
         if (copied) return;
-        e.currentTarget.style.color = COLOR.amber;
-        e.currentTarget.style.borderColor = COLOR.amber;
+        e.currentTarget.style.color = COLOR.accent;
+        e.currentTarget.style.borderColor = COLOR.accent;
       }}
       onMouseLeave={(e) => {
         if (copied) return;
@@ -192,7 +192,7 @@ function CatBox({
       </span>
       <span
         className="relative z-10 font-mono text-[11.5px] font-bold uppercase tracking-[0.14em]"
-        style={{ color: COLOR.amber }}
+        style={{ color: COLOR.accent }}
       >
         {label}
       </span>
@@ -233,7 +233,7 @@ export default function PortfolioPage() {
           >
             Salai Hang
           </h1>
-          <p className="m-0 font-mono text-[13.5px] tracking-[0.03em]" style={{ color: COLOR.amber }}>
+          <p className="m-0 font-mono text-[13.5px] tracking-[0.03em]" style={{ color: COLOR.accent }}>
             Web Development <span style={{ color: COLOR.inkFaint, padding: "0 8px" }}>&middot;</span> Digital
             Marketing <span style={{ color: COLOR.inkFaint, padding: "0 8px" }}>&middot;</span> Data Analytics
           </p>
@@ -288,7 +288,7 @@ export default function PortfolioPage() {
         >
           <span
             className="absolute -top-[3px] left-[22%] h-[7px] w-[2px] rounded-[1px]"
-            style={{ background: COLOR.amber }}
+            style={{ background: COLOR.accent }}
           />
         </div>
 
@@ -359,7 +359,7 @@ export default function PortfolioPage() {
             </SectionLabelArt>
             <span
               className="relative z-10 font-mono text-[11.5px] font-bold uppercase tracking-[0.14em]"
-              style={{ color: COLOR.amber }}
+              style={{ color: COLOR.accent }}
             >
               Skills
             </span>
@@ -381,7 +381,7 @@ export default function PortfolioPage() {
                       className="rounded-[3px] border px-2.5 py-1 font-mono text-[11px] tracking-[0.02em]"
                       style={
                         tag.build
-                          ? { color: COLOR.amber, borderColor: "rgba(221,160,84,.35)", background: COLOR.surface }
+                          ? { color: COLOR.accent, borderColor: "rgba(96,165,250,.35)", background: COLOR.surface }
                           : { color: COLOR.inkDim, borderColor: COLOR.line, background: COLOR.surface }
                       }
                     >
@@ -416,7 +416,7 @@ export default function PortfolioPage() {
             </SectionLabelArt>
             <span
               className="relative z-10 font-mono text-[11.5px] font-bold uppercase tracking-[0.14em]"
-              style={{ color: COLOR.amber }}
+              style={{ color: COLOR.accent }}
             >
               Education &amp; Certifications
             </span>
@@ -441,8 +441,10 @@ export default function PortfolioPage() {
                       href={item.href}
                       target="_blank"
                       rel="noopener"
-                      className="font-mono text-[16.5px] font-bold no-underline hover:[color:var(--amber)]"
+                      className="font-mono text-[16.5px] font-bold no-underline"
                       style={{ color: COLOR.ink }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = COLOR.accent)}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = COLOR.ink)}
                     >
                       {item.name} <span style={{ color: COLOR.teal, fontWeight: 400 }}>↗</span>
                     </a>
@@ -477,7 +479,7 @@ export default function PortfolioPage() {
                 rel="noopener"
                 aria-label={social.label}
                 style={{ color: COLOR.inkDim }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = COLOR.amber)}
+                onMouseEnter={(e) => (e.currentTarget.style.color = COLOR.accent)}
                 onMouseLeave={(e) => (e.currentTarget.style.color = COLOR.inkDim)}
               >
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
@@ -491,7 +493,7 @@ export default function PortfolioPage() {
               rel="noopener"
               aria-label="Instagram"
               style={{ color: COLOR.inkDim }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = COLOR.amber)}
+              onMouseEnter={(e) => (e.currentTarget.style.color = COLOR.accent)}
               onMouseLeave={(e) => (e.currentTarget.style.color = COLOR.inkDim)}
             >
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
